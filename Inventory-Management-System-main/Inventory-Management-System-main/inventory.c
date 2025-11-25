@@ -144,12 +144,12 @@ void update_product()
         printf("Product not found.\n");
 }
 
-void delete_product()
+void reduce_or_delete_product()
 {
     int id, found = 0;
     char confirm;
     
-    id = input_positive_int("\nEnter Product ID to delete: ");
+    id = input_positive_int("\nEnter Product ID to sell: ");
 
     for (int i = 0; i < count; i++)
     {
@@ -158,30 +158,53 @@ void delete_product()
             found = 1;
             
             printf("\n+====================================+\n");
-            printf("|  PRODUCT FOUND - CONFIRM DELETE    |\n");
+            printf("|  PRODUCT SELL/REDUCE               |\n");
             printf("+====================================+\n");
             printf("Product ID: %d\n", products[i].id);
             printf("Product Name: %s\n", products[i].name);
-            printf("Quantity: %d\n", products[i].quantity);
+            printf("Current Quantity: %d\n", products[i].quantity);
             printf("Price: %.2f\n\n", products[i].price);
             
-            printf("Are you sure you want to delete? (Y/N): ");
-            scanf(" %c", &confirm);
-            
-            if (confirm == 'Y' || confirm == 'y')
+            if (products[i].quantity > 1)
             {
-                for (int j = i; j < count - 1; j++)
-                    products[j] = products[j + 1];
-                count--;
-                save_to_file();
+                printf("Reduce quantity by 1? (Y/N): ");
+                scanf(" %c", &confirm);
                 
-                printf("\n+====================================+\n");
-                printf("| PRODUCT DELETED SUCCESSFULLY       |\n");
-                printf("+====================================+\n\n");
+                if (confirm == 'Y' || confirm == 'y')
+                {
+                    products[i].quantity--;
+                    save_to_file();
+                    
+                    printf("\n+====================================+\n");
+                    printf("| QUANTITY UPDATED: %d LEFT          |\n", products[i].quantity);
+                    printf("+====================================+\n\n");
+                }
+                else
+                {
+                    printf("\n[!] Cancelled.\n\n");
+                }
             }
-            else
+            else if (products[i].quantity == 1)
             {
-                printf("\n[!] Deletion cancelled.\n\n");
+                printf("[!] LAST UNIT! Selling will remove product.\n");
+                printf("Sell and remove from inventory? (Y/N): ");
+                scanf(" %c", &confirm);
+                
+                if (confirm == 'Y' || confirm == 'y')
+                {
+                    for (int j = i; j < count - 1; j++)
+                        products[j] = products[j + 1];
+                    count--;
+                    save_to_file();
+                    
+                    printf("\n+====================================+\n");
+                    printf("| PRODUCT REMOVED SUCCESSFULLY       |\n");
+                    printf("+====================================+\n\n");
+                }
+                else
+                {
+                    printf("\n[!] Cancelled.\n\n");
+                }
             }
             break;
         }
@@ -245,7 +268,7 @@ int main()
         printf("1. Add Product\n");
         printf("2. View Products\n");
         printf("3. Update Product\n");
-        printf("4. Delete Product\n");
+        printf("4. Reduce or Delete Quantity\n");
         printf("5. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
@@ -261,16 +284,16 @@ int main()
         case 3:
             update_product();
             break;
-        case 4:
-            delete_product();
-            break;
-        case 5:
-            save_to_file();
-            printf("\n Data saved. Exiting program...\n");
-            exit(0);
-        default:
-            printf(" Invalid choice. Try again.\n");
-        }
+       case 4:
+           reduce_or_delete_product();
+           break;
+       case 5:
+           save_to_file();
+           printf("\n Data saved. Exiting program...\n");
+           exit(0);
+       default:
+           printf(" Invalid choice. Try again.\n");
+       }
     }
 
     return 0;
