@@ -229,6 +229,7 @@ void sell_product()
                 return;
             }
             
+            getchar();  // Clear leftover newline from scanf
             printf("Enter customer name: ");
             fgets(customer_name, sizeof(customer_name), stdin);
             customer_name[strcspn(customer_name, "\n")] = '\0';
