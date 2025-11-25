@@ -147,25 +147,54 @@ void update_product()
 void delete_product()
 {
     int id, found = 0;
+    char confirm;
+    
     id = input_positive_int("\nEnter Product ID to delete: ");
 
     for (int i = 0; i < count; i++)
     {
         if (products[i].id == id)
         {
-            for (int j = i; j < count - 1; j++)
-                products[j] = products[j + 1];
-            count--;
-            save_to_file();
-            printf("\n Product deleted successfully!\n");
             found = 1;
+            
+            printf("\n+====================================+\n");
+            printf("|  PRODUCT FOUND - CONFIRM DELETE    |\n");
+            printf("+====================================+\n");
+            printf("Product ID: %d\n", products[i].id);
+            printf("Product Name: %s\n", products[i].name);
+            printf("Quantity: %d\n", products[i].quantity);
+            printf("Price: %.2f\n\n", products[i].price);
+            
+            printf("Are you sure you want to delete? (Y/N): ");
+            scanf(" %c", &confirm);
+            
+            if (confirm == 'Y' || confirm == 'y')
+            {
+                for (int j = i; j < count - 1; j++)
+                    products[j] = products[j + 1];
+                count--;
+                save_to_file();
+                
+                printf("\n+====================================+\n");
+                printf("| PRODUCT DELETED SUCCESSFULLY       |\n");
+                printf("+====================================+\n\n");
+            }
+            else
+            {
+                printf("\n[!] Deletion cancelled.\n\n");
+            }
             break;
         }
     }
+    
     if (!found)
-        printf(" Product not found.\n");
+    {
+        printf("\n+====================================+\n");
+        printf("|      PRODUCT NOT FOUND             |\n");
+        printf("|  No product with ID: %d\n", id);
+        printf("+====================================+\n\n");
+    }
 }
-
 void view_products()
 {
     if (count == 0)
