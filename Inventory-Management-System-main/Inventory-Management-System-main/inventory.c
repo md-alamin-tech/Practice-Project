@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #define FILE_NAME "inventory.dat"
+#define HISTORY_FILE "history.dat"
 
 // <<<< ====== Structure of inventory product ====== >>>>
 struct Product
@@ -16,11 +18,29 @@ struct Product
 struct Product products[100];
 int count = 0;
 
+// <<<< ====== Structure for Purchase History ====== >>>>
+struct PurchaseHistory
+{
+    int product_id;
+    char customer_name[50];
+    int quantity;
+    char date[20];
+    float total_price;
+};
+
+struct PurchaseHistory history[500];
+int history_count = 0;
+
 void load_from_file();
 void save_to_file();
+void load_history_from_file();
+void save_history_to_file();
 void add_product();
 void update_product();
 void view_products();
+void sell_product();
+void view_purchase_history();
+void get_current_date(char *date);
 int input_positive_int(const char *prompt);
 float input_positive_float(const char *prompt);
 
@@ -45,6 +65,35 @@ void save_to_file()
         fwrite(products, sizeof(struct Product), count, fp);
         fclose(fp);
     }
+}
+
+void load_history_from_file()
+{
+    FILE *fp = fopen(HISTORY_FILE, "rb");
+    if (fp != NULL)
+    {
+        fread(&history_count, sizeof(int), 1, fp);
+        fread(history, sizeof(struct PurchaseHistory), history_count, fp);
+        fclose(fp);
+    }
+}
+
+void save_history_to_file()
+{
+    FILE *fp = fopen(HISTORY_FILE, "wb");
+    if (fp != NULL)
+    {
+        fwrite(&history_count, sizeof(int), 1, fp);
+        fwrite(history, sizeof(struct PurchaseHistory), history_count, fp);
+        fclose(fp);
+    }
+}
+
+void get_current_date(char *date)
+{
+    time_t t = time(NULL);
+    struct tm *tm_info = localtime(&t);
+    strftime(date, 20, "%d-%m-%Y %H:%M", tm_info);
 }
 
 int input_positive_int(const char *prompt)
@@ -144,9 +193,10 @@ void update_product()
         printf("Product not found.\n");
 }
 
-void reduce_or_delete_product()
+void sell_product()
 {
-    int id, found = 0;
+    int id, found = 0, qty;
+    char customer_name[50];
     char confirm;
     
     id = input_positive_int("\nEnter Product ID to sell: ");
@@ -158,53 +208,57 @@ void reduce_or_delete_product()
             found = 1;
             
             printf("\n+====================================+\n");
-            printf("|  PRODUCT SELL/REDUCE               |\n");
+            printf("|        SELL PRODUCT                |\n");
             printf("+====================================+\n");
             printf("Product ID: %d\n", products[i].id);
             printf("Product Name: %s\n", products[i].name);
             printf("Current Quantity: %d\n", products[i].quantity);
             printf("Price: %.2f\n\n", products[i].price);
             
-            if (products[i].quantity > 1)
+            if (products[i].quantity == 0)
             {
-                printf("Reduce quantity by 1? (Y/N): ");
-                scanf(" %c", &confirm);
-                
-                if (confirm == 'Y' || confirm == 'y')
-                {
-                    products[i].quantity--;
-                    save_to_file();
-                    
-                    printf("\n+====================================+\n");
-                    printf("| QUANTITY UPDATED: %d LEFT          |\n", products[i].quantity);
-                    printf("+====================================+\n\n");
-                }
-                else
-                {
-                    printf("\n[!] Cancelled.\n\n");
-                }
+                printf("[!] Product out of stock!\n\n");
+                return;
             }
-            else if (products[i].quantity == 1)
+            
+            qty = input_positive_int("Enter quantity to sell: ");
+            
+            if (qty > products[i].quantity)
             {
-                printf("[!] LAST UNIT! Selling will remove product.\n");
-                printf("Sell and remove from inventory? (Y/N): ");
-                scanf(" %c", &confirm);
+                printf("[!] Not enough stock! Available: %d\n\n", products[i].quantity);
+                return;
+            }
+            
+            printf("Enter customer name: ");
+            fgets(customer_name, sizeof(customer_name), stdin);
+            customer_name[strcspn(customer_name, "\n")] = '\0';
+            
+            printf("\nConfirm sale of %d unit(s)? (Y/N): ", qty);
+            scanf(" %c", &confirm);
+            
+            if (confirm == 'Y' || confirm == 'y')
+            {
+                // Record purchase history
+                history[history_count].product_id = products[i].id;
+                strcpy(history[history_count].customer_name, customer_name);
+                history[history_count].quantity = qty;
+                history[history_count].total_price = products[i].price * qty;
+                get_current_date(history[history_count].date);
+                history_count++;
                 
-                if (confirm == 'Y' || confirm == 'y')
-                {
-                    for (int j = i; j < count - 1; j++)
-                        products[j] = products[j + 1];
-                    count--;
-                    save_to_file();
-                    
-                    printf("\n+====================================+\n");
-                    printf("| PRODUCT REMOVED SUCCESSFULLY       |\n");
-                    printf("+====================================+\n\n");
-                }
-                else
-                {
-                    printf("\n[!] Cancelled.\n\n");
-                }
+                // Update quantity
+                products[i].quantity -= qty;
+                save_to_file();
+                save_history_to_file();
+                
+                printf("\n+====================================+\n");
+                printf("| SALE RECORDED SUCCESSFULLY         |\n");
+                printf("| Remaining Quantity: %d             |\n", products[i].quantity);
+                printf("+====================================+\n\n");
+            }
+            else
+            {
+                printf("\n[!] Sale cancelled.\n\n");
             }
             break;
         }
@@ -257,10 +311,37 @@ void view_products()
     printf("-----------------------------------------------------------------------------\n");
 }
 
+void view_purchase_history()
+{
+    if (history_count == 0)
+    {
+        printf("\n No purchase history found.\n");
+        return;
+    }
+
+    printf("\n================ PURCHASE HISTORY ================\n");
+    printf("| %-5s | %-15s | %-10s | %-15s | %-15s |\n",
+           "PID", "Customer", "Qty", "Total Price", "Date");
+    printf("-------------------------------------------------------------\n");
+
+    for (int i = 0; i < history_count; i++)
+    {
+        printf("| %-5d | %-15s | %-10d | %-15.2f | %-15s |\n",
+               history[i].product_id,
+               history[i].customer_name,
+               history[i].quantity,
+               history[i].total_price,
+               history[i].date);
+    }
+
+    printf("-------------------------------------------------------------\n");
+}
+
 int main()
 {
     int choice;
     load_from_file();
+    load_history_from_file();
 
     while (1)
     {
@@ -268,8 +349,9 @@ int main()
         printf("1. Add Product\n");
         printf("2. View Products\n");
         printf("3. Update Product\n");
-        printf("4. Reduce or Delete Quantity\n");
-        printf("5. Exit\n");
+        printf("4. Sell Product\n");
+        printf("5. View Purchase History\n");
+        printf("6. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
@@ -284,16 +366,20 @@ int main()
         case 3:
             update_product();
             break;
-       case 4:
-           reduce_or_delete_product();
-           break;
-       case 5:
-           save_to_file();
-           printf("\n Data saved. Exiting program...\n");
-           exit(0);
-       default:
-           printf(" Invalid choice. Try again.\n");
-       }
+        case 4:
+            sell_product();
+            break;
+        case 5:
+            view_purchase_history();
+            break;
+        case 6:
+            save_to_file();
+            save_history_to_file();
+            printf("\n Data saved. Exiting program...\n");
+            exit(0);
+        default:
+            printf(" Invalid choice. Try again.\n");
+        }
     }
 
     return 0;
