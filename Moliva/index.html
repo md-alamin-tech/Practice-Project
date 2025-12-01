@@ -5,61 +5,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movila</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
 
 </head>
 
 <body>
-    <div class="header-navbar">
-        <div class="container">
-            <div class="header-navbar__logo">
-                <img src="./logo.png" alt="logo">
-            </div>
-            <div class="header-navbar__menu">
-                <ul class="header-navbar__menu__select">
-                    <li>
-                        <select>
-                            <option value="home">Home</option>
-                            <option value="about">Home1</option>
-                            <option value="about">Home2</option>
-                            <option value="about">Home</option>
-                        </select>
-                    </li>
-                    <li>
-                        <select>
-                            <option value="">Destinations</option>
-                            <option value="">Destinations1</option>
-                            <option value="">Destinations2</option>
-                            <option value="">Destinations3</option>
-
-                        </select>
-                    </li>
-                    <li>
-                        <select>
-                            <option value="">Moliva Tours</option>
-                            <option value="">Moliva Tours1</option>
-                            <option value="">Moliva Tours2</option>
-                            <option value="">Moliva Tours3</option>
-                        </select>
-                    </li>
-                    <li>
-                        <select>
-                            <option value="">Travel Insight</option>
-                            <option value="">Travel Insight1</option>
-                            <option value="">Travel Insight2</option>
-                            <option value="">Travel Insight3</option>
-                        </select>
-                    </li>
-                    <li><select>
-                            <option value="">Pages</option>
-                            <option value="about">Pages1</option>
-                            <option value="about">Pages2</option>
-                            <option value="about">Pages3</option>
-                        </select></li>
+    <!-- navbar -->
+    <nav class="navbar bg-base-100 shadow-md">
+        <div class="navbar-start">
+            <a href="" class="btn btn-ghost"><img src="./logo.png" alt="logo" class="h-10"></a>
+        </div>
+        
+        <!-- Desktop Menu -->
+        <div class="navbar-center gap-2 hidden lg:flex">
+            <select class="select select-bordered select-sm">
+                <option>Home</option>
+                <option>Home1</option>
+                <option>Home2</option>
+            </select>
+            <select class="select select-bordered select-sm">
+                <option>Destinations</option>
+                <option>Destinations1</option>
+                <option>Destinations2</option>
+                <option>Destinations3</option>
+            </select>
+            <select class="select select-bordered select-sm">
+                <option>Moliva Tours</option>
+                <option>Moliva Tours1</option>
+                <option>Moliva Tours2</option>
+                <option>Moliva Tours3</option>
+            </select>
+            <select class="select select-bordered select-sm">
+                <option>Travel Insight</option>
+                <option>Travel Insight1</option>
+                <option>Travel Insight2</option>
+                <option>Travel Insight3</option>
+            </select>
+            <select class="select select-bordered select-sm">
+                <option>Pages</option>
+                <option>Pages1</option>
+                <option>Pages2</option>
+                <option>Pages3</option>
+            </select>
+        </div>
+        
+        <!-- Mobile Menu Button -->
+        <div class="navbar-end lg:hidden">
+            <div class="dropdown dropdown-end">
+                <button class="btn btn-ghost"><i class="fa-solid fa-bars"></i></button>
+                <ul class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                    <li><a>Home</a></li>
+                    <li><a>Destinations</a></li>
+                    <li><a>Moliva Tours</a></li>
+                    <li><a>Travel Insight</a></li>
+                    <li><a>Pages</a></li>
                 </ul>
             </div>
         </div>
-    </div>
+        
+        <!-- Icons (Desktop) -->
+        <div class="navbar-end gap-4 hidden md:flex">
+            <a href="" class="btn btn-ghost"><i class="fa-solid fa-basket-shopping"></i></a>
+            <a href="" class="btn btn-ghost"><i class="fa-regular fa-heart"></i></a>
+            <a href="" class="btn btn-ghost"><i class="fa-regular fa-user"></i></a>
+        </div>
+    </nav>
 </body>
 
 </html>
