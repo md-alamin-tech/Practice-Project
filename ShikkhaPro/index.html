@@ -314,8 +314,8 @@
     <footer class="bg-gray-900 text-white">
 
         <!-- Aboute sectio  -->
-        <section class="About">
-            <div>
+        <section class="container grid grid-cols-1 md:grid-cols-2 justify-center m-auto justify-between p-4 md:p-6">
+            <div class="gap-50 flex-col flex space-evenly space-y-2 ">
                 <div class="">
                     <i class="fa-solid fa-book-open cursore-pointer text-xl md:text-2xl text-[#4FB883] "></i>
                     <span class="text-base md:text-lg font-bold cursore-pointer">ShikkhaPro</span>
@@ -328,33 +328,43 @@
                         Class 1 to University.</p>
                     </p>
                 </div>
-                <div class="icon">
-                    <i class="fa-brands fa-github"></i>
-                    <i class="fa-brands fa-x-twitter"></i>
-                    <i class="fa-brands fa-linkedin-in"></i>
-                    <i class="fa-brands fa-facebook-f"></i>
+                <div class="icon flex flex-row gap-4 ">
+                    <div class="h-[45px] w-[45px] border border-gray-300 rounded-lg flex items-center justify-center">
+                        <i class="fa-brands fa-github text-gray-300"></i>
+                    </div>
+                    <div class="h-[45px] w-[45px] border border-gray-300 rounded-lg flex items-center justify-center">
+                        <i class="fa-brands fa-x-twitter text-gray-300"></i>
+                    </div>
+                    <div class="h-[45px] w-[45px] border border-gray-300 rounded-lg flex items-center justify-center">
+                        <i class="fa-brands fa-linkedin-in text-gray-300"></i>
+                    </div>
+                    <div class="h-[45px] w-[45px] border border-gray-300 rounded-lg flex items-center justify-center">
+                        <i class="fa-brands fa-facebook-f text-gray-300"></i>
+                    </div>
                 </div>
 
             </div>
-            <div>
-                <h4>Quick Links</h4>
-                <a class="text-gray-600 text-xs md:text-sm">Home</a>
-                <a class="text-gray-600 text-xs md:text-sm">Feature</a>
-                <a class="text-gray-600 text-xs md:text-sm">How it work</a>
-                <a class="text-gray-600 text-xs md:text-sm">About Us</a>
-            </div>
-            <div>
-                <h4>Dashboard</h4>
-                <a class="text-gray-600 text-xs md:text-sm">Overview</a>
-                <a class="text-gray-600 text-xs md:text-sm">Create Quiz</a>
-                <a class="text-gray-600 text-xs md:text-sm">My Quizzes</a>
-                <a class="text-gray-600 text-xs md:text-sm">Quiz Attempts</a>
-            </div>
-            <div>
-                <h4>Legal</h4>
-                <a class="text-gray-600 text-xs md:text-sm">Privacy Policy</a>
-                <a class="text-gray-600 text-xs md:text-sm">Terms of Service</a>
+            <div class="flex flex-row gap-10">
+                <div class="flex flex-col space-y-2">
+                    <h4>Quick Links</h4>
+                    <a class="text-gray-600 text-xs md:text-sm">Home</a>
+                    <a class="text-gray-600 text-xs md:text-sm">Feature</a>
+                    <a class="text-gray-600 text-xs md:text-sm">How it work</a>
+                    <a class="text-gray-600 text-xs md:text-sm">About Us</a>
+                </div>
+                <div class="flex flex-col space-y-2">
+                    <h4>Dashboard</h4>
+                    <a class="text-gray-600 text-xs md:text-sm">Overview</a>
+                    <a class="text-gray-600 text-xs md:text-sm">Create Quiz</a>
+                    <a class="text-gray-600 text-xs md:text-sm">My Quizzes</a>
+                    <a class="text-gray-600 text-xs md:text-sm">Quiz Attempts</a>
+                </div>
+                <div class="flex flex-col space-y-2">
+                    <h4>Legal</h4>
+                    <a class="text-gray-600 text-xs md:text-sm">Privacy Policy</a>
+                    <a class="text-gray-600 text-xs md:text-sm">Terms of Service</a>
 
+                </div>
             </div>
         </section>
         <hr class="border-t-2 border-gray-300 my-6">
