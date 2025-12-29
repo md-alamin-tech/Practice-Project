@@ -5,15 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Header</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=daisyui"></script>
 </head>
 
-<body>
-    <header>
-        <div class="icon">
-            <img src=".//images/site-logo-2.png" alt="TEKARSH">
+<body class="min-h-screen w-screen ">
+    <header class="navbar flex justify-between p-4 h-20 w-screen bg-white-500 shadow-sm w-screen bg-base-200 items-center">
+        <div >
+            <img class="icon w-18 h-20" src=".//images/site-logo-2.png" alt="TEKARSH">
         </div>
-        <nav>
-            <a href="">Home</a>
+        <nav class="flex  items-center gap-4 font-bold">
+            <a class="" href="">HOME</a>
             <a href="">WHY CHOOSE US</a>
             <a href="">SERVICES</a>
             <select name="" id="">
@@ -22,7 +24,7 @@
                 <option value="">Water</option>
                 <option value="">Health</option>
             </select>
-            <button>CAREER</button>
+            <button class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 ">CAREER</button>
         </nav>
     </header>
 </body>
