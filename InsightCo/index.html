@@ -12,7 +12,7 @@
 
 </head>
 
-<body class="w-screen flex-col h-screen">
+<body class="w-screen flex-col h-screen  ">
 
     <!-- header start -->
     <header class=" h-[65px] bg-[#2625D1]  content-center ">
@@ -74,6 +74,7 @@
     <!-- header end -->
 
     <!-- main start -->
+     <div class="relative">
     <main class="h-[80vh]  bg-[url('./image/hero1-bg.png')] bg-cover bg-contain bg-center bg-no-repeat">
         <section class="container mx-auto flex flex-col justify-center h-full">
             <div class="flex flex-col h-[350px] w-[636px] justify-between">
@@ -99,12 +100,13 @@
 
 
     <!-- rating start -->
-    <section class="container mx-auto rounded-sm shadow-2xl shadow-gray-800 flex items-center justify-center">
+    <section
+        class="absolute left-0 right-0 -mt-20 bg-[#ffffff] container mx-auto  shadow-lg shadow-gray-500 flex items-center justify-center">
         <div class="flex gap-[114px] py-[50px] px-[94]">
             <div class="flex items-center justify-evenly gap-[20px]">
                 <img class="h-[65px] w-[65px]" src="./image/icon 1.png" alt="">
                 <div>
-                    <span class="font-semibold">500+</span>
+                    <span class="font-semibold ">500+</span>
                     <p>Successful Projects</p>
                 </div>
             </div>
@@ -132,6 +134,11 @@
         </div>
     </section>
 
+    </div>
+
+    <section class="h-[50vh] bg-blue-500">
+
+    </section>
 </body>
 
 </html>
